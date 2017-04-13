@@ -46,7 +46,7 @@ describe Mailboxer::Notification do
   end
 
   it "should be able to specify a sender for a notification" do
-    @entity1.notify("Subject", "Body", nil, true, nil, true, @entity3)
+    @entity1.notify("Subject", "Body", nil, true, nil, nil, true, @entity3)
     expect(@entity1.mailbox.receipts.size).to eq 1
     notification = @entity1.mailbox.receipts.first.notification
     expect(notification.sender).to eq(@entity3)
@@ -106,7 +106,7 @@ describe Mailboxer::Notification do
   end
 
   it "should be able to specify a sender for a notification" do
-    Mailboxer::Notification.notify_all(@entity1,"Subject","Body", nil, true, nil, false, @entity3)
+    Mailboxer::Notification.notify_all(@entity1,"Subject","Body", nil, true, nil, nil, false, @entity3)
 
     #Check getting ALL receipts
     expect(@entity1.mailbox.receipts.size).to eq 1
