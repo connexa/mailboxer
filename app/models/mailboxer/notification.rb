@@ -7,6 +7,7 @@ class Mailboxer::Notification < ActiveRecord::Base
   belongs_to :sender, :polymorphic => :true, :required => false
   belongs_to :notified_object, :polymorphic => :true, :required => false
   belongs_to :context_object, :polymorphic => :true, :required => false
+  belongs_to :target_object, :polymorphic => :true, :required => false
   has_many :receipts, :dependent => :destroy, :class_name => "Mailboxer::Receipt"
 
   validates :subject, :length => { :maximum => Mailboxer.subject_max_length }
@@ -33,14 +34,15 @@ class Mailboxer::Notification < ActiveRecord::Base
 
   class << self
     #Sends a Notification to all the recipients
-    def notify_all(recipients, subject, body, notified_obj=nil, context_obj=nil, sanitize_text=true,
-      notification_code=nil, notification_group=nil, send_mail=true, sender=nil)
+    def notify_all(recipients, subject, body, notified_obj=nil, context_obj=nil, target_obj=nil,
+      sanitize_text=true, notification_code=nil, notification_group=nil, send_mail=true, sender=nil)
       notification = Mailboxer::NotificationBuilder.new({
         :recipients         => recipients,
         :subject            => subject,
         :body               => body,
         :notified_object    => notified_obj,
         :context_object     => context_obj,
+        :target_object      => target_obj,
         :notification_code  => notification_code,
         :notification_group => notification_group,
         :sender             => sender
